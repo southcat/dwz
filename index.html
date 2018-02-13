@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>南方的猫域名防洪工具 - SouthCat</title>
+    <meta name="keywords" content="优启梦,防红短链接,短链接生成,域名防红,域名防洪工具">
+    <meta name="description" content="Tx,360防洪在线小工具,由优启梦(uomg.com)开发">
+    <meta name="author" content="southcat.net" />
+    <meta name="generator" content="CATJump" />
+    <meta name="360-site-verification" content="c349a8928dddbcde6e4ab9a31dab7928" />
+    <!--[if lte IE 8]><script src="assets/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <script>
+      $(document).ready(function(){
+        $('#start').click(function(){
+          var url = $("input[id='longurl']").val();
+          var radionum = document.getElementsByName("api");
+          for(var i=0;i<radionum.length;i++){
+              if(radionum[i].checked){Gtype = radionum[i].value;}
+          } 
+          if (Gtype == 'dwz' ) {
+            $.ajax({
+              type:"post",
+              url: "dwz.php",
+              dataType: "json",
+              data:"longurl="+url,
+              async:true,
+              success: function(a) {
+                  var strJson = JSON.stringify(a) 
+                  var data = $.parseJSON(strJson);
+                  console.log(data); 
+                  if(data.ae_url){
+                      $('#dwzdate').html(data.ae_url);
+                      GetQr(data.ae_url);
+                  }else{
+                    alert(data.msg);
+                  }
+              },
+              error: function(a) {
+                alert("失败！！");
+              }
+            });
+          }else if (Gtype == 'tj' ) {
+            window.location.href='tj.php?longurl='+url;
+          }
+        });
+      });
+    </script>
+  </head>
+  <body class="is-loading">
+
+    <!-- Wrapper -->
+      <div id="wrapper">
+
+        <!-- Main -->
+          <section id="main">
+            <div>
+              <span class="logo"><img src="https://url.cn/5XSRB8W" alt="南方的猫域名防洪工具"></span>
+              <p>Tx网址防洪工具</p>
+            </div>
+            <div id="Gtype">
+              <input id="dwz" name="api" type="radio" value="dwz" checked="checked">
+              <label for="dwz">生成</label>
+              <input id="tj" name="api" type="radio" value="tj">
+              <label for="tj">查统计</label>
+            </div>
+            <div>
+              <input class="longurl" type="text" id="longurl" placeholder="http://southcat.net/url">
+              <input class="btn"  type="button" id="start" value="生成">
+              <p></p>
+            </div>
+            <p id="dwzdate">您还没有生成数据<br /></p>
+            <div id="qrcode"></div>
+          </section>
+
+        <!-- Footer -->
+          <footer id="footer">
+            <ul class="copyright">
+                <li>© 模板: <a href="http://southcat.net" target="_blank">南方的猫</a></li>
+                 <li><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1272851282'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1272851282' type='text/javascript'%3E%3C/script%3E"));</script></li>            
+            </ul>
+            <span><a>那朵沉香的三月鲜花，只为你灿烂绽放</a></span>
+          </footer>
+      </div>
+
+    <!-- Scripts -->
+      <!--[if lte IE 8]><script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script><![endif]-->
+      <script>
+        if ('addEventListener' in window) {
+          window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
+          document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
+        }
+      </script>
+      <script>
+        GetQr(location.protocol+'//'+location.host);
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?2d0d0ab7f31f644bec3107077caa96c6";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        function GetQr(url){
+            var qrcode = $('#qrcode');
+            qrcode.html('');
+            qrcode.qrcode({
+                width: 200,
+                height: 200,
+                text: url
+            });
+            qrcode.removeClass('am-hide');
+        }
+      </script>
+
+  </body>
+</html>
